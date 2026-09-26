@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="auth_otp_reset.list">
+      <field name="name">auth_otp_reset list</field>
+      <field name="model">auth_otp_reset.auth_otp_reset</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="auth_otp_reset.action_window">
+      <field name="name">auth_otp_reset window</field>
+      <field name="res_model">auth_otp_reset.auth_otp_reset</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="auth_otp_reset.action_server">
+      <field name="name">auth_otp_reset server</field>
+      <field name="model_id" ref="model_auth_otp_reset_auth_otp_reset"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="auth_otp_reset" id="auth_otp_reset.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="auth_otp_reset.menu_1" parent="auth_otp_reset.menu_root"/>
+    <menuitem name="Menu 2" id="auth_otp_reset.menu_2" parent="auth_otp_reset.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="auth_otp_reset.menu_1_list" parent="auth_otp_reset.menu_1"
+              action="auth_otp_reset.action_window"/>
+    <menuitem name="Server to list" id="auth_otp_reset" parent="auth_otp_reset.menu_2"
+              action="auth_otp_reset.action_server"/>
+-->
+  </data>
+</odoo>
