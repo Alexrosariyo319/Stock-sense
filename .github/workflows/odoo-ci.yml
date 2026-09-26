@@ -10,7 +10,53 @@ jobs:
   test-odoo-module:
     runs-on: ubuntu-latest
 
+    services:name: Odoo Module CI
+
+on:
+  push:
+    branches: [ main, add-stocksense-ims-backend ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-odoo-module:
+    runs-on: ubuntu-latest
+
     services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo_password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    container:
+      image: odoo:17.0
+      options: --user root
+
+    steps:
+      - name: Checkout StockSense Repository
+        uses: actions/checkout@v4
+
+      - name: Install and Test StockSense Module
+        run: |
+          odoo \
+            -d test_db \
+            --db_user=odoo \
+            --db_password=odoo_password \
+            --db_host=postgres \
+            --addons-path="/usr/lib/python3/dist-packages/odoo/addons,custom_addons" \
+            -i stocksense \
+            --test-enable \
+            --stop-after-init
+            
       postgres:
         image: postgres:15
         env:
