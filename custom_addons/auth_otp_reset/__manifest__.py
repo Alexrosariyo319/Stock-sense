@@ -1,33 +1,24 @@
 {
     'name': "auth_otp_reset",
 
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
+    'summary': "OTP-based password reset for StockSense",
 
     'description': """
-Long description of module's purpose
+Replaces Odoo's default reset-password-by-link flow with a numeric
+OTP sent to the user's email, which they must verify before setting
+a new password.
     """,
 
-    'author': "My Company",
-    'website': "https://www.yourcompany.com",
+    'author': "Jabez",
+    'website': "https://github.com/Alexrosariyo319/stocksense",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    'category': 'Extra Tools',
+    'version': '19.0.1.0.0',
 
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'auth_signup', 'mail'],
 
-    # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'security/ir.model.access.csv',
         'views/templates.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }
-

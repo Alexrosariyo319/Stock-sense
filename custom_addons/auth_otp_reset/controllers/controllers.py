@@ -1,21 +1,30 @@
-# from odoo import http
+from odoo import http
+from odoo.http import request
 
 
-# class AuthOtpReset(http.Controller):
-#     @http.route('/auth_otp_reset/auth_otp_reset', auth='public')
-#     def index(self, **kw):
-#         return "Hello, world"
+class AuthOtpController(http.Controller):
 
-#     @http.route('/auth_otp_reset/auth_otp_reset/objects', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('auth_otp_reset.listing', {
-#             'root': '/auth_otp_reset/auth_otp_reset',
-#             'objects': http.request.env['auth_otp_reset.auth_otp_reset'].search([]),
-#         })
+    @http.route('/auth/otp/request', type='http', auth='public', methods=['GET', 'POST'], csrf=True)
+    def request_otp(self, **kw):
+        error = None
+        if kw.get('login'):
+            user = request.env['res.users'].sudo().search([('login', '=', kw['login'])], limit=1)
+            if user:
+                request.env['auth.otp'].sudo().generate_otp(user)
+                return request.render('auth_otp_reset.otp_verify_page', {'login': kw['login']})
+            else:
+                error = "No account found with that email/login."
+        return request.render('auth_otp_reset.otp_request_page', {'error': error})
 
-#     @http.route('/auth_otp_reset/auth_otp_reset/objects/<model("auth_otp_reset.auth_otp_reset"):obj>', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('auth_otp_reset.object', {
-#             'object': obj
-#         })
-
+    @http.route('/auth/otp/verify', type='http', auth='public', methods=['GET', 'POST'], csrf=True)
+    def verify_otp(self, **kw):
+        error = None
+        login = kw.get('login')
+        if kw.get('code') and kw.get('new_password'):
+            user = request.env['res.users'].sudo().search([('login', '=', login)], limit=1)
+            if user and request.env['auth.otp'].sudo().verify_otp(user, kw['code']):
+                user.sudo().write({'password': kw['new_password']})
+                return request.render('auth_otp_reset.otp_success_page', {})
+            else:
+                error = "Invalid or expired code. Please try again."
+        return request.render('auth_otp_reset.otp_verify_page', {'login': login, 'error': error})
