@@ -1,0 +1,38 @@
+All Products
+        stocksense.product
+        tree,form
+    
+
+    
+        Low Stock Alert
+        stocksense.product
+        tree,form
+        [('total_stock', '<=', 10)]
+    
+
+    
+        Pending Receipts
+        stocksense.operation
+        tree,form
+        [('operation_type', '=', 'receipt'), ('status', '!=', 'done')]
+    
+
+    
+        Pending Deliveries
+        stocksense.operation
+        tree,form
+        [('operation_type', '=', 'delivery'), ('status', '!=', 'done')]
+    
+
+    
+        Scheduled Transfers
+        stocksense.operation
+        tree,form
+        [('operation_type', '=', 'internal'), ('status', '!=', 'done')]
+    
+
+    
+
+        Inventory Dashboard
+        stocksense.product
+        tree
